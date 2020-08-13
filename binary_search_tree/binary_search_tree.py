@@ -9,6 +9,9 @@ This part of the project comprises two days:
 2. Implement the `in_order_print`, `bft_print`, and `dft_print` methods
    on the BSTNode class.
 """
+
+from collections import deque
+
 class BSTNode:
     def __init__(self, value):
         self.value = value
@@ -79,12 +82,37 @@ class BSTNode:
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self):
-        pass
+        q = deque()
+
+        q.append(self)
+
+        while len(q) > 0:
+            current = q.popleft()
+
+            if current.left:
+                q.append(current.left)
+            
+            if current.right:
+                q.append(current.right)
+            
+            print(current.value)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self):
-        pass
+        stack = []
+        stack.append(self)
+
+        while len(stack) > 0:
+            current = stack.pop()
+
+            if current.right:
+                stack.append(current.right)
+            
+            if current.left:
+                stack.append(current.left)
+            
+            print(current.value)
 
     # Stretch Goals -------------------------
     # Note: Research may be required
@@ -110,22 +138,44 @@ bst.insert(3)
 bst.insert(4)
 bst.insert(2)
 
+def mult_by_two(n):
+    print(n * 2)
+
+print("Max value:")
+print(bst.get_max())
+print("---------------\n")
+
+
+print("Contains 8?")
+print(bst.contains(8))
+print("---------------\n")
+
+
+print("Contains 2000?")
+print(bst.contains(2000))
+print("---------------\n")
+
+
+print("Multiply each by 2:")
+bst.for_each(mult_by_two)
+print("---------------\n")
+
+
+print("In order:")
+bst.in_order_print()
+print("---------------\n")
+
+
+print("Breadth first:")
 bst.bft_print()
-
-# print(bst.get_max())
-"""
-def echo(s):
-    print(s)
-
-bst.for_each(echo)
-"""
+print("---------------\n")
 
 
-
-"""
-bst.bft_print()
+print("Depth first:")
 bst.dft_print()
 
+
+"""
 print("elegant methods")
 print("pre order")
 bst.pre_order_dft()
