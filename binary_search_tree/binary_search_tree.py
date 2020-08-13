@@ -9,45 +9,110 @@ This part of the project comprises two days:
 2. Implement the `in_order_print`, `bft_print`, and `dft_print` methods
    on the BSTNode class.
 """
+
+from collections import deque
+
 class BSTNode:
     def __init__(self, value):
         self.value = value
         self.left = None
         self.right = None
 
+    def __str__(self):
+        return str(self.value)
+
     # Insert the given value into the tree
     def insert(self, value):
-        pass
+        if value < self.value:
+            if not self.left:
+                self.left = BSTNode(value)
+            else:
+                self.left.insert(value)
+        else:
+            if not self.right:
+                self.right = BSTNode(value)
+            else:
+                self.right.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        pass
+        if self.value == target or target == None:
+            return True
+        else:
+            if target < self.value:
+                if self.left is not None:
+                    return self.left.contains(target)
+            else:
+                if self.right is not None:
+                    return self.right.contains(target)
+        return False
+
 
     # Return the maximum value found in the tree
     def get_max(self):
-        pass
+        if self.right == None:
+            return self.value
+        else:
+            return self.right.get_max()
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
-        pass
+        fn(self.value)
+
+        if self.left:
+            self.left.for_each(fn)
+        
+        if self.right:
+            self.right.for_each(fn)
 
     # Part 2 -----------------------
 
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self):
-        pass
+        if self.left:
+            self.left.in_order_print()
+
+        print(self.value)    
+        
+        if self.right:
+            self.right.in_order_print()
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self):
-        pass
+        q = deque()
+
+        q.append(self)
+
+        while len(q) > 0:
+            current = q.popleft()
+
+            if current.left:
+                q.append(current.left)
+            
+            if current.right:
+                q.append(current.right)
+            
+            print(current.value)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self):
-        pass
+        stack = []
+        stack.append(self)
+
+        while len(stack) > 0:
+            current = stack.pop()
+
+            if current.right:
+                stack.append(current.right)
+            
+            if current.left:
+                stack.append(current.left)
+            
+            print(current.value)
 
     # Stretch Goals -------------------------
     # Note: Research may be required
@@ -63,7 +128,7 @@ class BSTNode:
 """
 This code is necessary for testing the `print` methods
 """
-bst = BinarySearchTree(1)
+bst = BSTNode(1)
 
 bst.insert(8)
 bst.insert(5)
@@ -73,9 +138,44 @@ bst.insert(3)
 bst.insert(4)
 bst.insert(2)
 
+def mult_by_two(n):
+    print(n * 2)
+
+print("Max value:")
+print(bst.get_max())
+print("---------------\n")
+
+
+print("Contains 8?")
+print(bst.contains(8))
+print("---------------\n")
+
+
+print("Contains 2000?")
+print(bst.contains(2000))
+print("---------------\n")
+
+
+print("Multiply each by 2:")
+bst.for_each(mult_by_two)
+print("---------------\n")
+
+
+print("In order:")
+bst.in_order_print()
+print("---------------\n")
+
+
+print("Breadth first:")
 bst.bft_print()
+print("---------------\n")
+
+
+print("Depth first:")
 bst.dft_print()
 
+
+"""
 print("elegant methods")
 print("pre order")
 bst.pre_order_dft()
@@ -83,3 +183,4 @@ print("in order")
 bst.in_order_dft()
 print("post order")
 bst.post_order_dft()  
+"""
